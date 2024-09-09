@@ -5,4 +5,5 @@ app_name = 'yt'
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('get_progress/', views.get_progress, name='get_progress'),
 ]

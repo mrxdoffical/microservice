@@ -1,10 +1,81 @@
-<!-- ytdownloader/templates/ytdownloader/home.html -->
-<h2>YouTube Downloader</h2>
-<form method="post">
-    {% csrf_token %}
-    <input type="text" name="url" placeholder="Enter YouTube URL" required>
-    <button type="submit">Download</button>
-</form>
-{% if error %}
-    <p style="color: red;">{{ error }}</p>
-{% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Downloader</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script>
+        let progressInterval;
+
+        function showProgress() {
+            document.getElementById('progress-bar').style.display = 'block';
+            if (!progressInterval) {
+                progressInterval = setInterval(updateProgress, 1000);  // Update progress every second
+            }
+        }
+
+        function updateProgress() {
+            fetch('/ytdownloader/get_progress/')
+                .then(response => response.json())
+                .then(data => {
+                    const progress = data.progress;
+                    const progressBar = document.getElementById('progress');
+                    progressBar.style.width = progress + '%';
+                    progressBar.innerText = progress + '%';
+                    if (progress >= 100) {
+                        clearInterval(progressInterval);
+                        progressInterval = null;
+                    }
+                })
+                .catch(error => console.error('Error fetching progress:', error));
+        }
+    </script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">YouTube Downloader</h1>
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+        <form method="post" onsubmit="showProgress()" class="mb-4">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="url">YouTube URL:</label>
+                <input type="text" id="url" name="url" class="form-control" value="{{ url }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Fetch Video Info</button>
+        </form>
+        {% if title and thumbnail %}
+            <div class="card mb-4">
+                <img src="{{ thumbnail }}" class="card-img-top" alt="Thumbnail">
+                <div class="card-body">
+                    <h5 class="card-title">{{ title }}</h5>
+                    <form method="post" onsubmit="showProgress()">
+                        {% csrf_token %}
+                        <input type="hidden" name="url" value="{{ url }}">
+                        <div class="form-group">
+                            <label for="format_id">Select Quality:</label>
+                            <select id="format_id" name="format_id" class="form-control" required>
+                                {% for format in formats %}
+                                    <option value="{{ format.format_id }}">{{ format.format_note }} ({{ format.ext }}) - {{ format.resolution }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-success">Download</button>
+                    </form>
+                </div>
+            </div>
+        {% endif %}
+        <div id="progress-bar" style="display: none;">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 0%;" id="progress"></div>
+            </div>
+            <p>Downloading...</p>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
