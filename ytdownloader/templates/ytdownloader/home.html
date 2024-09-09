@@ -1,0 +1,10 @@
+<!-- ytdownloader/templates/ytdownloader/home.html -->
+<h2>YouTube Downloader</h2>
+<form method="post">
+    {% csrf_token %}
+    <input type="text" name="url" placeholder="Enter YouTube URL" required>
+    <button type="submit">Download</button>
+</form>
+{% if error %}
+    <p style="color: red;">{{ error }}</p>
+{% endif %}
