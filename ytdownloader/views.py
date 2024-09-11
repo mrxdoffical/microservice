@@ -1,3 +1,4 @@
+# views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
@@ -6,6 +7,7 @@ import os
 import re
 import logging
 import urllib.parse
+from .models import YouTubeDownload
 
 logger = logging.getLogger(__name__)
 
@@ -40,16 +42,23 @@ def home(request):
                     info_dict = ydl.extract_info(url, download=False)
                     formats = info_dict.get('formats', [])
                     
-                    # Filter for mp4 and mp3 formats
+                    # Define common formats and qualities
+                    common_formats = {
+                        'mp4': ['360p', '480p', '720p', '1080p'],
+                        'mp3': ['128k', '192k', '256k', '320k']
+                    }
+                    
+                    # Filter for common formats and qualities
                     filtered_formats = [
                         {
                             'format_id': f['format_id'],
                             'format_note': f.get('format_note', 'N/A'),
                             'ext': f['ext'],
-                            'resolution': f.get('resolution', 'audio only') if f.get('vcodec') != 'none' else 'audio only',
+                            'resolution': f.get('resolution', 'audio only') if f.get('vcodec') == 'none' else f.get('resolution', 'N/A'),
                             'filesize': f.get('filesize', 0)
                         }
-                        for f in formats if f['ext'] in ['mp4', 'mp3']
+                        for f in formats
+                        if f['ext'] in common_formats and f.get('format_note') in common_formats[f['ext']]
                     ]
                     
                     video_details = {
@@ -85,6 +94,7 @@ def home(request):
                 with yt_dlp.YoutubeDL(ydl_opts_info) as ydl:
                     info_dict = ydl.extract_info(url, download=False)
                     title = info_dict.get('title')
+                    thumbnail = info_dict.get('thumbnail')
                     ext = 'mp4'  # Default extension
                     format_note = next((f['format_note'] for f in info_dict['formats'] if f['format_id'] == format_id), 'N/A')
 
@@ -110,11 +120,25 @@ def home(request):
                     # Encode the filename for Content-Disposition header
                     encoded_filename = urllib.parse.quote(filename)
                     response['Content-Disposition'] = f'attachment; filename*=UTF-8\'\'{encoded_filename}'
+                    
+                    # Save the download record to the database
+                    YouTubeDownload.objects.create(
+                        user=request.user,
+                        url=url,
+                        format_id=format_id,
+                        title=title,
+                        thumbnail=thumbnail  # Ensure this line is correct
+                    )
+                    
                     return response
             except Exception as e:
                 logger.error(f"Error downloading video: {e}")
                 return render(request, 'ytdownloader/home.html', {'error': f"Error downloading video: {e}"})
-    return render(request, 'ytdownloader/home.html')
+    
+    # Fetch the user's downloads
+    downloads = YouTubeDownload.objects.filter(user=request.user)
+    mp3_format_ids = [download.format_id for download in downloads if 'mp3' in download.format_id]
+    return render(request, 'ytdownloader/home.html', {'downloads': downloads, 'mp3_format_ids': mp3_format_ids})
 
 @login_required
 def get_progress(request):

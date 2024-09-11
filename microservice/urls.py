@@ -21,5 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('users/', include('users.urls')),
     path('ytdownloader/', include('ytdownloader.urls')),
-    path('', user_views.home, name='home'),
+    path('', user_views.landing_page, name='landing_page'),
+    path('about', user_views.about, name='about'),
+    path('todo/', include('ToDoList.urls', namespace='todo')),
+    path('pdfconverter/', include('pdfconverter.urls')),
+
 ]

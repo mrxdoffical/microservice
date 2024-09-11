@@ -1,0 +1,16 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Landing Page{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card p-5 custom-card shadow">
+        <h1 class="text-center">Welcome to your {{ site_name }}</h1>
+        <p class="text-center">Please login or register to continue.</p>
+        <div class="text-center">
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg mx-2">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-primary btn-lg mx-2">Register</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

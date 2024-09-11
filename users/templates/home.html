@@ -1,2 +1,38 @@
-<h2>Welcome to the Main Website</h2>
-<p><a href="{% url 'yt:home' %}">YouTube Downloader</a></p>
+{% extends 'users/base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4 text-white">Welcome to the Main Website</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4 shadow custom-card">
+                <div class="card-body">
+                    <h5 class="card-title">YouTube Downloader</h5>
+                    <p class="card-text">Download videos from YouTube easily.</p>
+                    <a href="{% url 'yt:home' %}" class="btn btn-primary">Go to YouTube Downloader</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow custom-card">
+                <div class="card-body">
+                    <h5 class="card-title">To-Do List</h5>
+                    <p class="card-text">Manage your tasks efficiently.</p>
+                    <a href="{% url 'todo:home' %}" class="btn btn-primary">Go to To-Do List</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card mb-4 shadow custom-card">
+                <div class="card-body">
+                    <h5 class="card-title">PDF Converter</h5>
+                    <p class="card-text">Convert various file types to PDF.</p>
+                    <a href="{% url 'pdfconverter_home' %}" class="btn btn-primary">Go to PDF Converter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Delete To-Do Item{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Delete To-Do Item</h2>
+    <p>Are you sure you want to delete "{{ item.title }}"?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, delete</button>
+    </form>
+    <a href="{% url 'todo:home' %}" class="btn btn-secondary mt-3">Back to List</a>
+</div>
+{% endblock %}

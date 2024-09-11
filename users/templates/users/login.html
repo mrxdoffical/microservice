@@ -1,27 +1,37 @@
-{% extends 'base.html' %}
+{% extends 'users/base.html' %}
+{% load form_tags %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
-<h1 class="text-center">Login</h1>
-{% if error %}
-    <div class="alert alert-danger" role="alert">
-        {{ error }}
+<div class="container mt-5">
+    <h1 class="text-center">Login</h1>
+    <form method="post" class="mb-3">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for error in form.non_field_errors %}
+                    <p class="mb-0">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field|add_class:"form-control" }}
+                {% if field.errors %}
+                    <div class="alert alert-danger mt-2">
+                        {% for error in field.errors %}
+                            <p class="mb-0">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+    <div class="text-center">
+        <p>Don't have an account? <a href="{% url 'register' %}" class="btn btn-link">Register</a></p>
     </div>
-{% endif %}
-<form method="post" class="mb-3">
-    {% csrf_token %}
-    <div class="form-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" class="form-control" required>
-    </div>
-    <div class="form-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" class="form-control" required>
-    </div>
-    <button type="submit" class="btn btn-primary btn-block">Login</button>
-</form>
-<div class="text-center">
-    <p>Don't have an account? <a href="{% url 'register' %}" class="btn btn-secondary">Register Now</a></p>
 </div>
 {% endblock %}

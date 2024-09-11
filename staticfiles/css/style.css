@@ -1,0 +1,11 @@
+.custom-bg-color {
+    background-color: #0a5c36 !important;
+    color: white; /* Ensure text is readable */
+}
+
+/* static/css/styles.css */
+.blueish-bg-color {
+    background-color: #1e3a5f !important; /* Blueish color */
+    color: white; /* Ensure text is readable */
+    margin-bottom: 10px;
+}

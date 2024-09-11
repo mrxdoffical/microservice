@@ -1,0 +1,13 @@
+\documentclass{article}
+\usepackage{fontspec}
+\usepackage{polyglossia}
+\usepackage{ulem} % Add this line to include the ulem package
+\setmainlanguage{english}
+\setotherlanguage{arabic}
+\newfontfamily\arabicfont[Script=Arabic]{Scheherazade}
+
+\begin{document}
+
+$body$
+
+\end{document}
