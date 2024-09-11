@@ -7,19 +7,57 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #121212 !important;
+            background: linear-gradient(135deg, #FFD700, #FFA500) !important; /* Gold gradient background */
             color: #e0e0e0 !important;
             min-height: 100vh;
         }
         .navbar {
-            background-color: #1f1f1f !important;
+            background: linear-gradient(135deg, #3a3a3a, #1f1f1f) !important;
+            position: -webkit-sticky; /* For Safari */
+            position: sticky;
+            top: 0;
+            z-index: 1000; /* Ensure the navbar is above other content */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .nav-link {
+            color: #e0e0e0 !important;
+        }
+        .nav-link:hover {
+            color: #ffffff !important;
         }
         .custom-card {
-            background-color: #2c2c2c !important;
+            background-color: rgba(44, 44, 44, 0.5) !important; /* More transparent background */
             color: #e0e0e0 !important;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .shadow {
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card-container .custom-card {
+            flex: 1 1 calc(33.333% - 20px); /* Adjust the width as needed */
+        }
+        .card-body {
+            flex-grow: 1;
+        }
+        .card-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
         }
     </style>
 </head>
@@ -60,10 +98,29 @@
         </div>
     </nav>
     <div class="container mt-5">
-        {% block content %}{% endblock %}
+        <div class="card-container">
+            {% block content %}{% endblock %}
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.custom-card');
+            let maxHeight = 0;
+
+            cards.forEach(card => {
+                const cardHeight = card.offsetHeight;
+                if (cardHeight > maxHeight) {
+                    maxHeight = cardHeight;
+                }
+            });
+
+            cards.forEach(card => {
+                card.style.height = `${maxHeight}px`;
+            });
+        });
+    </script>
 </body>
 </html>

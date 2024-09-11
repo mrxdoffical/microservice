@@ -24,6 +24,6 @@ urlpatterns = [
     path('', user_views.landing_page, name='landing_page'),
     path('about', user_views.about, name='about'),
     path('todo/', include('ToDoList.urls', namespace='todo')),
-    path('pdfconverter/', include('pdfconverter.urls')),
+    path('file_converter/', include('file_converter.urls')),
 
 ]
