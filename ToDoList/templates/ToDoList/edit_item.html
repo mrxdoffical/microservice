@@ -4,6 +4,15 @@
 
 {% block content %}
 <div class="container mt-5">
+    <style>
+        .no-resize {
+            resize: none;
+        }
+        body {
+            background: linear-gradient(135deg, #008080, #00008B) !important; /* Teal to dark blue gradient background */
+            color: #ffffff !important;
+        }
+    </style>
     <div class="form-container mx-auto">
         <h2 class="text-center mb-4">Edit To-Do Item</h2>
         <form method="post">
@@ -11,14 +20,25 @@
             <div class="form-group">
                 {{ form.description.label_tag }}
                 {{ form.description }}
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.querySelector('textarea').classList.add('form-control', 'no-resize');
+                    });
+                </script>
             </div>
             <div class="form-group form-check">
                 {{ form.completed }}
                 {{ form.completed.label_tag }}
             </div>
-            <button type="submit" class="btn btn-primary btn-block mt-3">Save Changes</button>
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                </div>
+                <div class="col">
+                    <a href="{% url 'todo:home' %}" class="btn btn-secondary w-100">Back to List</a>
+                </div>
+            </div>
         </form>
-        <a href="{% url 'todo:home' %}" class="btn btn-secondary btn-block mt-3">Back to List</a>
     </div>
 </div>
 {% endblock %}

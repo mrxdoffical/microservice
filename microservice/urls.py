@@ -25,5 +25,7 @@ urlpatterns = [
     path('about', user_views.about, name='about'),
     path('todo/', include('ToDoList.urls', namespace='todo')),
     path('file_converter/', include('file_converter.urls')),
+        path('contact/', user_views.contact, name='contact'),
+
 
 ]

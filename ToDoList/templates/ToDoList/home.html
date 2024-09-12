@@ -3,22 +3,81 @@
 {% block title %}To-Do List{% endblock %}
 
 {% block content %}
+<style>
+    body {
+        background: linear-gradient(135deg, #008080, #00008B) !important; /* Teal to dark blue gradient background */
+        color: #ffffff !important;
+    }
+    .container {
+        background-color: rgba(44, 44, 44, 0.8) !important; /* Transparent background */
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .btn-primary {
+        background-color: #008080 !important; /* Teal */
+        border-color: #008080 !important;
+    }
+    .btn-primary:hover {
+        background-color: #005757 !important; /* Darker teal */
+        border-color: #005757 !important;
+    }
+    .list-group-item {
+        background-color: rgba(255, 255, 255, 0.1) !important; /* Slightly transparent white */
+        color: #ffffff !important;
+    }
+    .btn-warning {
+        background-color: #FFA500 !important; /* Orange */
+        border-color: #FFA500 !important;
+    }
+    .btn-warning:hover {
+        background-color: #CC8400 !important; /* Darker orange */
+        border-color: #CC8400 !important;
+    }
+    .btn-danger {
+        background-color: #FF4500 !important; /* OrangeRed */
+        border-color: #FF4500 !important;
+    }
+    .btn-danger:hover {
+        background-color: #CC3700 !important; /* Darker OrangeRed */
+        border-color: #CC3700 !important;
+    }
+    .badge-success {
+        background-color: #28a745 !important; /* Bootstrap success color */
+    }
+    .empty-message {
+        text-align: center;
+        font-size: 1.2em;
+        color: #ffffff;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+    }
+    .item-title {
+        font-weight: bold;
+        color: #FFA500; /* Highlight color for the title */
+    }
+</style>
 <div class="container mt-5">
     <h2 class="text-center mb-4 text-white">To-Do List</h2>
     <a href="{% url 'todo:add_item' %}" class="btn btn-primary mb-4">Add New Item</a>
     <ul class="list-group">
         {% for item in items %}
-            <li class="list-group-item blueish-bg-color">
+            <li class="list-group-item">
                 <div class="d-flex justify-content-between align-items-center">
                     <div>
+                        <div class="item-title">{{ item.title }}</div>
                         {{ item.description }}
-                        {% if item.completed %} <span class="badge bg-success">Completed</span> {% endif %}
+                        {% if item.completed %} <span class="badge badge-success">Completed</span> {% endif %}
                     </div>
                     <div>
                         <a href="{% url 'todo:edit_item' item.id %}" class="btn btn-sm btn-warning">Edit</a>
                         <a href="{% url 'todo:delete_item' item.id %}" class="btn btn-sm btn-danger">Delete</a>
                     </div>
                 </div>
+            </li>
+        {% empty %}
+            <li class="list-group-item empty-message">
+                No items in your to-do list. Add a new item to get started!
             </li>
         {% endfor %}
     </ul>

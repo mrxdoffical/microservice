@@ -3,28 +3,93 @@
 {% block title %}Upload Video - File Converter{% endblock %}
 
 {% block content %}
-<h1>Upload Video</h1>
+<style>
+    body {
+        background: linear-gradient(135deg, #4B0082, #000000) !important; /* Dark purple to black gradient background */
+        color: #ffffff !important;
+    }
+    .card-glass {
+        background: rgba(255, 255, 255, 0.1) !important; /* Glass effect */
+        border: 1px solid rgba(0, 0, 0, 0.2) !important; /* Dark borders */
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .btn-upload {
+        background-color: #333 !important; /* Dark gray */
+        border-color: #333 !important;
+        color: #ffffff !important;
+        padding: 10px 20px; /* Add padding */
+        border-radius: 5px; /* Rounded corners */
+        font-size: 1rem; /* Font size */
+        transition: background-color 0.3s, border-color 0.3s; /* Smooth transition */
+    }
+    .btn-upload:hover {
+        background-color: #000 !important; /* Black */
+        border-color: #000 !important;
+    }
+    .btn-success {
+        background-color: #28a745 !important; /* Bootstrap success color */
+        border-color: #28a745 !important;
+    }
+    .btn-success:hover {
+        background-color: #218838 !important; /* Darker success color */
+        border-color: #1e7e34 !important;
+    }
+    .messages .alert {
+        margin-bottom: 10px;
+    }
+</style>
 
-{% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                {{ message }}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Upload Video</h1>
+
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="card card-glass">
+        <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="text-center">
+                <button type="submit" class="btn btn-upload mt-3">Upload</button>
             </div>
-        {% endfor %}
+        </form>
     </div>
-{% endif %}
 
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-</form>
+    {% if audio_path %}
+        <div class="mt-3 text-center">
+            <a href="{% url 'file_converter:download_file' audio_path %}" class="btn btn-success">Download Converted MP3</a>
+        </div>
+    {% endif %}
+</div>
 
-{% if audio_path %}
-    <div class="mt-3">
-        <a href="{% url 'file_converter:download_file' audio_path %}" class="btn btn-success">Download Converted MP3</a>
-    </div>
-{% endif %}
-
+<script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
 {% endblock %}

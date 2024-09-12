@@ -1,11 +1,13 @@
 {% extends 'users/base.html' %}
+{% load static %}
 
 {% block title %}YouTube Downloader{% endblock %}
 
 {% block content %}
 <style>
     body {
-        background: linear-gradient(135deg, #ff0000, #cc0000) !important; /* Red gradient background */
+        background: url("{% static 'images/youtube_background.jpg' %}") no-repeat center center fixed !important; /* Red gradient background */
+        background-size: cover !important; /* Cover the entire background */
         color: #ffffff !important;
     }
     .custom-card {
@@ -22,16 +24,33 @@
         background-color: #333 !important;
         color: #ffffff !important;
     }
+    .form-control#url {
+        color: #000000 !important; /* Black text for YouTube URL input */
+    }
     .btn-primary {
-        background-color: #ff0000 !important;
-        border-color: #ff0000 !important;
+        background-color: #8B0000 !important; /* Darker red */
+        border-color: #8B0000 !important;
     }
     .btn-primary:hover {
-        background-color: #cc0000 !important;
-        border-color: #cc0000 !important;
+        background-color: #660000 !important; /* Even darker red */
+        border-color: #660000 !important;
+    }
+    .btn-fetch {
+        background-color: #333 !important; /* Dark gray */
+        border-color: #333 !important;
+        color: #ffffff !important;
+    }
+    .btn-fetch:hover {
+        background-color: #000 !important; /* Black */
+        border-color: #000 !important;
     }
     .text-white {
-        color: #ffffff !important;
+        color: #3C3D37 !important;
+    }
+    .centered-button {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px; /* Add space below the button */
     }
 </style>
 <div class="container mt-5">
@@ -40,9 +59,9 @@
         {% csrf_token %}
         <div class="form-group">
             <label for="url" class="text-white">YouTube URL</label>
-            <input type="url" class="form-control bg-dark text-white" id="url" name="url" placeholder="Enter YouTube URL" required>
+            <input type="url" class="form-control bg-dark" id="url" name="url" placeholder="Enter YouTube URL" required>
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Fetch Formats</button>
+        <button type="submit" class="btn btn-fetch mt-3">Fetch Formats</button>
     </form>
     
     {% if video_formats %}
@@ -64,7 +83,9 @@
                 {% endfor %}
             </select>
         </div>
-        <button type="submit" class="btn btn-primary mt-3" name="download_type" value="video">Download Video</button>
+        <div class="centered-button">
+            <button type="submit" class="btn btn-primary mt-3" name="download_type" value="video">Download Video</button>
+        </div>
     </form>
     {% endif %}
     

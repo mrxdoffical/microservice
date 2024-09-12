@@ -7,12 +7,14 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background: linear-gradient(135deg, #FFD700, #FFA500) !important; /* Gold gradient background */
+            background: linear-gradient(135deg, #008080, #2F4F4F) !important; /* Dark teal to dark slate gray gradient background */
             color: #e0e0e0 !important;
             min-height: 100vh;
         }
         .navbar {
-            background: linear-gradient(135deg, #3a3a3a, #1f1f1f) !important;
+            background: rgba(255, 255, 255, 0.1) !important; /* Glass effect */
+            backdrop-filter: blur(10px); /* Blur effect */
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
             position: -webkit-sticky; /* For Safari */
             position: sticky;
             top: 0;
@@ -21,10 +23,15 @@
         }
         .navbar-brand {
             font-weight: bold;
-            font-size: 1.5rem;
+            font-size: 1.8rem; /* Increased font size */
+            color: #ffcc00 !important; /* Bright yellow color */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for better visibility */
         }
         .nav-link {
             color: #e0e0e0 !important;
+            font-size: 1.2rem; /* Increased font size */
+            font-weight: bold; /* Bold text */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* Text shadow for better visibility */
         }
         .nav-link:hover {
             color: #ffffff !important;
@@ -59,9 +66,41 @@
             align-items: center;
             margin-top: auto;
         }
+        .dropdown-menu {
+            background: rgba(139, 69, 19, 0.1) !important; /* Transparent brown background */
+            backdrop-filter: blur(10px); /* Blur effect */
+            -webkit-backdrop-filter: blur(10px); /* Safari support */
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        }
+        .dropdown-item {
+            color: #e0e0e0 !important;
+        }
+        .dropdown-item:hover {
+            background-color: rgba(139, 69, 19, 0.3) !important; /* Slightly darker brown on hover */
+            color: #ffffff !important;
+        }
+        .dropdown-item.logout {
+            font-weight: bold !important; /* Bold text for logout button */
+        }
+        /* Custom Scrollbar Styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f1f1f; /* Dark background for the track */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a3a3a; /* Darker thumb */
+            border-radius: 6px;
+            border: 3px solid #1f1f1f; /* Padding around thumb */
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555; /* Lighter thumb on hover */
+        }
     </style>
 </head>
-<body>
+<body class="{% block body_class %}{% endblock %}">
     <nav class="navbar navbar-expand-lg navbar-dark">
         <a class="navbar-brand" href="/">{{ site_name }}</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,6 +108,9 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
+                <li>
+                    <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                </li>
                 {% if request.path == '/about' %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'landing_page' %}">Return Home</a>
@@ -89,7 +131,7 @@
                             <div class="dropdown-divider"></div>
                             <form method="post" action="{% url 'logout' %}" style="display: inline;">
                                 {% csrf_token %}
-                                <button type="submit" class="dropdown-item">Logout</button>
+                                <button type="submit" class="dropdown-item logout">Logout</button>
                             </form>
                         </div>
                     </li>
@@ -102,8 +144,8 @@
             {% block content %}{% endblock %}
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {

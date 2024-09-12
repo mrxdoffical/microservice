@@ -1,0 +1,51 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<style>
+    .contact-container {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        padding: 30px;
+        color: #ffffff;
+    }
+    .social-media {
+        margin-top: 20px;
+        text-align: center;
+    }
+    .social-media a {
+        color: #ffffff;
+        font-size: 2rem;
+        margin: 0 15px;
+        transition: color 0.3s;
+    }
+    .social-media a:hover {
+        color: #ff4500;
+    }
+</style>
+<div class="container mt-5">
+    <div class="contact-container p-5 shadow">
+        <h1 class="text-center">Contact Us</h1>
+        <p class="text-center">Connect with us on social media or send us an email!</p>
+        <div class="social-media">
+            <a href="https://github.com/mrxdoffical" target="_blank">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="https://www.instagram.com/_its_bero_" target="_blank">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.facebook.com/bero gerges" target="_blank">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="mailto:berogergesg@gmail.com" target="_blank">
+                <i class="fas fa-envelope"></i>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
