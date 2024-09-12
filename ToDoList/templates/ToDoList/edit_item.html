@@ -15,8 +15,12 @@
     </style>
     <div class="form-container mx-auto">
         <h2 class="text-center mb-4">Edit To-Do Item</h2>
-        <form method="post">
+        <form method="post" action="{% url 'todo:edit_item' item.id %}">
             {% csrf_token %}
+            <div class="form-group">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+            </div>
             <div class="form-group">
                 {{ form.description.label_tag }}
                 {{ form.description }}

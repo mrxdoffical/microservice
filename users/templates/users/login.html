@@ -1,37 +1,77 @@
 {% extends 'users/base.html' %}
+{% load static %}
 {% load form_tags %}
 
 {% block title %}Login{% endblock %}
 
 {% block content %}
+<style>
+    body {
+        background: url("{% static 'images/login.jpg' %}") no-repeat center center fixed !important;
+        background-size: cover !important;
+    }
+    .custom-card {
+        background: rgba(255, 255, 255, 0.1) !important; /* Transparent white background */
+        backdrop-filter: blur(10px); /* Blur effect */
+        -webkit-backdrop-filter: blur(10px); /* Safari support */
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    }
+    .form-control {
+        background: rgba(255, 255, 255, 0.5) !important; /* Glossy effect */
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        color: #000 !important;
+    }
+    .form-control:focus {
+        background: rgba(255, 255, 255, 0.7) !important; /* More glossy on focus */
+        border-color: #80bdff !important;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
+    }
+    .login-heading, .form-group label {
+        color: #000 !important; /* Black text */
+        font-weight: bold !important; /* Bold text */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important; /* Text shadow */
+    }
+    .navbar-dark .navbar-nav .nav-link {
+        color: #000 !important; /* Darker navbar text */
+    }
+</style>
 <div class="container mt-5">
-    <h1 class="text-center">Login</h1>
-    <form method="post" class="mb-3">
-        {% csrf_token %}
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger">
-                {% for error in form.non_field_errors %}
-                    <p class="mb-0">{{ error }}</p>
-                {% endfor %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card custom-card">
+                <h1 class="text-center login-heading">Login</h1>
+                <form method="post" class="mb-3">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {% for error in form.non_field_errors %}
+                                <p class="mb-0">{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field|add_class:"form-control" }}
+                            {% if field.errors %}
+                                <div class="alert alert-danger mt-2">
+                                    {% for error in field.errors %}
+                                        <p class="mb-0">{{ error }}</p>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </form>
+                <div class="text-center">
+                    <p>Don't have an account? <a href="{% url 'register' %}" class="btn btn-link">Register</a></p>
+                </div>
             </div>
-        {% endif %}
-        {% for field in form %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field|add_class:"form-control" }}
-                {% if field.errors %}
-                    <div class="alert alert-danger mt-2">
-                        {% for error in field.errors %}
-                            <p class="mb-0">{{ error }}</p>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
-        {% endfor %}
-        <button type="submit" class="btn btn-primary btn-block">Login</button>
-    </form>
-    <div class="text-center">
-        <p>Don't have an account? <a href="{% url 'register' %}" class="btn btn-link">Register</a></p>
+        </div>
     </div>
 </div>
 {% endblock %}

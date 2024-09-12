@@ -6,7 +6,7 @@
 {% block content %}
 <style>
     body {
-        background: url("{% static 'images/youtube_background.jpg' %}") no-repeat center center fixed !important; /* Red gradient background */
+        background: url("{% static 'images/youtube.jpg' %}") no-repeat center center fixed !important; /* Red gradient background */
         background-size: cover !important; /* Cover the entire background */
         color: #ffffff !important;
     }
@@ -92,7 +92,7 @@
     {% if downloads %}
     <h3 class="text-white mt-5">Your Downloads</h3>
     <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="downloadsDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="downloadsDropdown" data-toggle="dropdown" aria-expanded="false">
             Your Downloads
         </button>
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="downloadsDropdown">
@@ -126,9 +126,6 @@
     <iframe id="download-iframe" name="download-iframe" style="display: none;"></iframe>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         const downloadForm = document.getElementById('download-form');
