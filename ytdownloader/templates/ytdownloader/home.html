@@ -3,16 +3,18 @@
 
 {% block title %}YouTube Downloader{% endblock %}
 
-{% block head %}
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+{% block content %}
 <style>
+    @import url('https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css');
+    @import url("{% static 'css/style.css' %}");
+
     body {
-        background: url("{% static 'images/youtube.jpg' %}") no-repeat center center fixed !important;
-        background-size: cover !important;
+        background: url("{% static 'images/youtube.jpg' %}") no-repeat center center fixed !important; /* Background image */
+        background-size: cover !important; /* Cover the entire background */
         color: #ffffff !important;
     }
     .custom-card {
-        background-color: rgba(44, 44, 44, 0.8) !important;
+        background-color: rgba(44, 44, 44, 0.8) !important; /* Transparent background */
         color: #ffffff !important;
         border-radius: 10px;
         padding: 20px;
@@ -26,59 +28,110 @@
         color: #ffffff !important;
     }
     .form-control#url {
-        color: #000000 !important;
+        color: #000000 !important; /* Black text for YouTube URL input */
     }
     .btn-primary {
-        background-color: #8B0000 !important;
+        background-color: #8B0000 !important; /* Darker red */
         border-color: #8B0000 !important;
     }
     .btn-primary:hover {
-        background-color: #660000 !important;
+        background-color: #660000 !important; /* Even darker red */
         border-color: #660000 !important;
     }
     .btn-fetch {
-        background-color: #333 !important;
+        background-color: #333 !important; /* Dark gray */
         border-color: #333 !important;
         color: #ffffff !important;
     }
     .btn-fetch:hover {
-        background-color: #000 !important;
+        background-color: #000 !important; /* Black */
         border-color: #000 !important;
     }
     .text-white {
-        color: #3C3D37 !important;
+        color: #ffffff !important;
     }
     .centered-button {
         display: flex;
         justify-content: center;
-        margin-bottom: 20px;
+        margin-bottom: 20px; /* Add space below the button */
+    }
+    .form-check-input {
+        background-color: #333 !important;
+        border-color: #333 !important;
+    }
+    .form-check-input:checked {
+        background-color: #8B0000 !important; /* Darker red */
+        border-color: #8B0000 !important;
+    }
+    .form-check-label {
+        margin-left: 10px;
+        color: #ffffff !important;
+    }
+    .spinner-border {
+        width: 3rem;
+        height: 3rem;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .spinner-border {
+        animation: spin 1s linear infinite;
+    }
+    /* Custom radio button styles */
+    .custom-radio .form-check-input {
+        position: absolute;
+        left: -9999px;
+    }
+    .custom-radio .form-check-label {
+        position: relative;
+        padding-left: 35px;
+        cursor: pointer;
+        display: inline-block;
+        color: #ffffff !important;
+    }
+    .custom-radio .form-check-label:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+        border: 2px solid #8B0000;
+        border-radius: 50%;
+        background: #333;
+    }
+    .custom-radio .form-check-input:checked + .form-check-label:before {
+        background: #8B0000;
+        border-color: #8B0000;
+    }
+    .custom-radio .form-check-input:checked + .form-check-label:after {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #ffffff;
     }
 </style>
-{% endblock %}
 
-{% block content %}
 <div class="container mt-5">
     <h2 class="text-center mb-4 text-white">YouTube Downloader</h2>
-    <form method="post" id="search-form">
-        {% csrf_token %}
+    
+    <!-- Search Form -->
+    <form method="get" action="{% url 'search_youtube' %}" class="mb-4">
         <div class="form-group">
-            <label for="search_query" class="text-white">Search YouTube</label>
-            <input type="text" class="form-control bg-dark" id="search_query" name="search_query" placeholder="Enter search query" required>
+            <label for="query" class="text-white">Search YouTube</label>
+            <input type="text" class="form-control bg-dark" id="query" name="query" placeholder="Search YouTube" required>
         </div>
         <button type="submit" class="btn btn-fetch mt-3">Search</button>
     </form>
 
-    {% if search_results %}
-    <h3 class="text-white mt-5">Search Results</h3>
-    <ul class="list-group">
-        {% for result in search_results %}
-        <li class="list-group-item bg-dark text-white">
-            <a href="{{ result.url }}" class="text-white">{{ result.title }}</a>
-        </li>
-        {% endfor %}
-    </ul>
-    {% endif %}
-
+    <!-- Fetch Formats Form -->
     <form method="post" id="fetch-form">
         {% csrf_token %}
         <div class="form-group">
@@ -107,9 +160,19 @@
                 {% endfor %}
             </select>
         </div>
+        <div class="form-group">
+            <label class="text-white">Download Type</label><br>
+            <div class="form-check form-check-inline custom-radio">
+                <input class="form-check-input" type="radio" name="download_type" id="video" value="video" checked>
+                <label class="form-check-label" for="video">Video</label>
+            </div>
+            <div class="form-check form-check-inline custom-radio">
+                <input class="form-check-input" type="radio" name="download_type" id="audio" value="audio">
+                <label class="form-check-label" for="audio">Audio Only</label>
+            </div>
+        </div>
         <div class="centered-button">
-            <button type="submit" class="btn btn-primary mt-3" name="download_type" value="video">Download Video</button>
-            <button type="submit" class="btn btn-primary mt-3" name="download_type" value="audio">Download Audio</button>
+            <button type="submit" class="btn btn-primary mt-3">Download</button>
         </div>
     </form>
     {% endif %}
