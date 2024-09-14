@@ -3,15 +3,16 @@
 
 {% block title %}YouTube Downloader{% endblock %}
 
-{% block content %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
 <style>
     body {
-        background: url("{% static 'images/youtube.jpg' %}") no-repeat center center fixed !important; /* Red gradient background */
-        background-size: cover !important; /* Cover the entire background */
+        background: url("{% static 'images/youtube.jpg' %}") no-repeat center center fixed !important;
+        background-size: cover !important;
         color: #ffffff !important;
     }
     .custom-card {
-        background-color: rgba(44, 44, 44, 0.8) !important; /* Transparent background */
+        background-color: rgba(44, 44, 44, 0.8) !important;
         color: #ffffff !important;
         border-radius: 10px;
         padding: 20px;
@@ -25,23 +26,23 @@
         color: #ffffff !important;
     }
     .form-control#url {
-        color: #000000 !important; /* Black text for YouTube URL input */
+        color: #000000 !important;
     }
     .btn-primary {
-        background-color: #8B0000 !important; /* Darker red */
+        background-color: #8B0000 !important;
         border-color: #8B0000 !important;
     }
     .btn-primary:hover {
-        background-color: #660000 !important; /* Even darker red */
+        background-color: #660000 !important;
         border-color: #660000 !important;
     }
     .btn-fetch {
-        background-color: #333 !important; /* Dark gray */
+        background-color: #333 !important;
         border-color: #333 !important;
         color: #ffffff !important;
     }
     .btn-fetch:hover {
-        background-color: #000 !important; /* Black */
+        background-color: #000 !important;
         border-color: #000 !important;
     }
     .text-white {
@@ -50,11 +51,34 @@
     .centered-button {
         display: flex;
         justify-content: center;
-        margin-bottom: 20px; /* Add space below the button */
+        margin-bottom: 20px;
     }
 </style>
+{% endblock %}
+
+{% block content %}
 <div class="container mt-5">
     <h2 class="text-center mb-4 text-white">YouTube Downloader</h2>
+    <form method="post" id="search-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="search_query" class="text-white">Search YouTube</label>
+            <input type="text" class="form-control bg-dark" id="search_query" name="search_query" placeholder="Enter search query" required>
+        </div>
+        <button type="submit" class="btn btn-fetch mt-3">Search</button>
+    </form>
+
+    {% if search_results %}
+    <h3 class="text-white mt-5">Search Results</h3>
+    <ul class="list-group">
+        {% for result in search_results %}
+        <li class="list-group-item bg-dark text-white">
+            <a href="{{ result.url }}" class="text-white">{{ result.title }}</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <form method="post" id="fetch-form">
         {% csrf_token %}
         <div class="form-group">
@@ -85,6 +109,7 @@
         </div>
         <div class="centered-button">
             <button type="submit" class="btn btn-primary mt-3" name="download_type" value="video">Download Video</button>
+            <button type="submit" class="btn btn-primary mt-3" name="download_type" value="audio">Download Audio</button>
         </div>
     </form>
     {% endif %}
@@ -126,7 +151,7 @@
     <iframe id="download-iframe" name="download-iframe" style="display: none;"></iframe>
 </div>
 
-<script>
+<script defer>
     document.addEventListener('DOMContentLoaded', (event) => {
         const downloadForm = document.getElementById('download-form');
         const loadingAnimation = document.getElementById('loading-animation');

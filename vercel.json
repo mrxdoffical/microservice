@@ -1,0 +1,21 @@
+{
+	"version": 2,
+	"builds": [
+	  {
+		"src": "microservice/wsgi.py",
+		"use": "@vercel/python",
+		"config": { "maxLambdaSize": "50mb" }
+	  }
+	],
+	"routes": [
+	  {
+		"src": "/(.*)",
+		"dest": "microservice/wsgi.py"
+	  }
+	],
+	"projectSettings": {
+	  "framework": "django",
+	  "buildCommand": "python manage.py collectstatic --noinput && python manage.py migrate",
+	  "outputDirectory": "staticfiles"
+	}
+  }
