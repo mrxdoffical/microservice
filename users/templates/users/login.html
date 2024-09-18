@@ -7,7 +7,7 @@
 {% block content %}
 <style>
     body {
-        background: url("{% static 'images/login.jpg' %}") no-repeat center center fixed !important;
+        background: url("{% static 'images/img.jpg' %}") no-repeat center center fixed !important;
         background-size: cover !important;
     }
     .custom-card {
@@ -17,30 +17,78 @@
         border-radius: 10px;
         padding: 20px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+        max-width: 400px;
+        margin: auto;
+        margin-top: 80px;
     }
     .form-control {
-        background: rgba(255, 255, 255, 0.5) !important; /* Glossy effect */
+        background: rgba(255, 255, 255, 0.5) !important;
         border: 1px solid rgba(255, 255, 255, 0.3) !important;
         color: #000 !important;
+        padding-right: 40px; /* Space for icon on the right */
     }
     .form-control:focus {
-        background: rgba(255, 255, 255, 0.7) !important; /* More glossy on focus */
+        background: rgba(255, 255, 255, 0.7) !important;
         border-color: #80bdff !important;
         outline: 0;
         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25) !important;
     }
     .login-heading, .form-group label {
-        color: #000 !important; /* Black text */
-        font-weight: bold !important; /* Bold text */
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important; /* Text shadow */
+        color: #000 !important;
+        font-weight: bold !important;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5) !important;
     }
     .navbar-dark .navbar-nav .nav-link {
-        color: #000 !important; /* Darker navbar text */
+        color: #000 !important;
+    }
+    .text-center p {
+        color: #000 !important;
+        font-weight: bold !important;
+    }
+    .btn-primary {
+        border-radius: 25px !important;
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+    .btn-primary:hover {
+        background-color: #0056b3 !important;
+        border-color: #0056b3 !important;
+    }
+    .input-group {
+        position: relative;
+    }
+    .form-icon {
+        position: absolute;
+        right: 10px; /* Icon to the right */
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 1.2rem;
+        color: #000; /* Black color */
+    }
+    /* New styles for inline layout */
+    .text-center-inline {
+        display: flex;
+        justify-content: center;
+        align-items: center; /* Ensure alignment of text and button */
+    }
+    .text-center-inline p {
+        margin-right: 10px; /* Space between text and button */
+        color: #000 !important;
+        font-weight: bold !important;
+        margin-bottom: 0; /* Align with button */
+    }
+    /* Adjust button height and alignment */
+    .btn-secondary {
+        padding: 5px 10px; /* Decrease padding */
+        font-size: 0.9rem; /* Slightly smaller font size */
+        line-height: 1.2rem; /* Reduce button height */
+        margin-bottom: 0; /* Align with the text */
     }
 </style>
+
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card custom-card">
                 <h1 class="text-center login-heading">Login</h1>
                 <form method="post" class="mb-3">
@@ -55,7 +103,14 @@
                     {% for field in form %}
                         <div class="form-group">
                             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            {{ field|add_class:"form-control" }}
+                            <div class="input-group">
+                                {{ field|add_class:"form-control" }}
+                                {% if field.name == 'username' %}
+                                    <i class="bx bx-user form-icon"></i>
+                                {% elif field.name == 'password' %}
+                                    <i class="bx bx-lock form-icon"></i>
+                                {% endif %}
+                            </div>
                             {% if field.errors %}
                                 <div class="alert alert-danger mt-2">
                                     {% for error in field.errors %}
@@ -67,11 +122,16 @@
                     {% endfor %}
                     <button type="submit" class="btn btn-primary btn-block">Login</button>
                 </form>
-                <div class="text-center">
-                    <p>Don't have an account? <a href="{% url 'users:register' %}" class="btn btn-link">Register</a></p>
+                <div class="text-center text-center-inline">
+                    <p>Don't have an account?</p>
+                    <a href="{% url 'users:register' %}" class="btn btn-dark">Register</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Include Boxicons CSS -->
+<link rel="stylesheet" href="https://unpkg.com/boxicons/css/boxicons.min.css">
+
 {% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'users/base.html' %}
+{% extends 'users/base.html' %} 
 {% load static %}
 
 {% block title %}Landing Page{% endblock %}
@@ -19,32 +19,42 @@
     }
 
     .header {
-        text-align: left;
-        margin-top: 100px;
-        padding: 20px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background: rgba(170, 166, 166, 0.5); /* Semi-transparent background for text visibility */
-        backdrop-filter: blur(5px); /* Glossy effect */
-        color: #af2727; /* Tinted red */
-        font-size: 2rem;
-        border-radius: 10px;
+        text-align: center;
+        margin-top: 30px;
+        padding: 10px 0;
+        position: relative;
+        width: 100%;
+        color: #fff;
+        font-size: 3rem;
+        font-weight: bold;
+        background: rgba(0, 0, 0, 0.4); /* Light tint for better visibility */
+        backdrop-filter: blur(5px); /* Soft glossy effect */
+        border-radius: 8px;
     }
 
     .main-content-wrapper {
         display: flex;
-        justify-content: flex-start;
+        flex-direction: column;
         align-items: center;
-        position: relative;
-        height: calc(100vh - 100px); /* Adjust height to avoid overlap */
-        padding: 0 20px; /* Ensure padding to avoid content touching edges */
+        padding: 20px;
+        margin-top: 0px; /* Adjust margin-top to move content upwards */
+        height: calc(100vh - 150px); /* Adjust height to fit viewport */
+        justify-content: center; /* Center content vertically */
+    }
+
+    .features-container {
+        display: flex;
+        justify-content: space-around; /* Space out features evenly */
+        width: 100%; /* Make sure it takes full width */
+        max-width: 1200px; /* Limit max width */
+        margin-bottom: 20px; /* Reduce bottom margin to move features up */
     }
 
     .feature {
-        margin-bottom: 30px;
+        text-align: center;
         color: #ffffff;
-        text-align: left;
+        margin: 0 10px;
+        flex: 1; /* Make features flexible */
     }
 
     .feature h3 {
@@ -59,50 +69,77 @@
     .feature-icon {
         font-size: 3rem;
         color: #ff4500;
+        margin-bottom: 10px; /* Space between icon and text */
     }
 
-    .footer {
+    .buttons {
         display: flex;
-        justify-content: flex-start;
-        padding: 20px;
-        position: absolute;
-        bottom: 0;
-        left: 0;
+        gap: 10px;
+        margin-top: 10px; /* Adjust margin-top to move buttons up */
     }
 
-    .footer .btn {
-        margin-right: 10px;
+    .buttons .btn {
+        background-color: #ff4500;
+        border-color: #ff4500;
+        padding: 10px 20px;
+        border-radius: 5px;
+        white-space: nowrap;
+        font-size: 1rem;
+        color: white;
+        text-align: center; /* Center text inside buttons */
+        text-decoration: none; /* Remove underline from links */
+        display: inline-block; /* Make sure link behaves like a button */
+    }
+
+    .buttons .btn:hover {
+        background-color: #cc3700;
+        border-color: #cc3700;
+    }
+
+    /* Media query for responsiveness */
+    @media (max-width: 767px) {
+        .features-container {
+            flex-direction: column; /* Stack features vertically on small screens */
+        }
     }
 </style>
 
-<!-- Title at the top left -->
+<!-- Title at the top center -->
 <div class="header">
-    <h1>Welcome to Your Second Home</h1>
+    Welcome to Your Second Home
 </div>
 
-<!-- Features at the left side -->
+<!-- Features displayed next to each other -->
 <div class="main-content-wrapper">
-    <div class="feature">
-        <i class="fas fa-check-circle feature-icon"></i>
-        <h3>YouTube Downloader</h3>
-        <p>Discover the amazing benefits of our first feature.</p>
+    <div class="features-container">
+        <div class="feature">
+            <i class="fas fa-check-circle feature-icon"></i> 
+            <div>
+                <h3>YouTube Downloader</h3>
+                <p>Discover the amazing benefits of our first feature.</p>
+            </div>
+        </div>
+        <div class="feature">
+            <i class="fas fa-tasks feature-icon"></i>
+            <div>
+                <h3>To Do List</h3>
+                <p>Manage your tasks efficiently with our second feature.</p>
+            </div>
+        </div>
+        <div class="feature">
+            <i class="fas fa-file-alt feature-icon"></i>
+            <div>
+                <h3>File Converter</h3>
+                <p>Convert from mp4 to mp3 seamlessly with our third feature.</p>
+            </div>
+        </div>
     </div>
-    <div class="feature">
-        <i class="fas fa-tasks feature-icon"></i>
-        <h3>To Do List</h3>
-        <p>Manage your tasks efficiently with our second feature.</p>
-    </div>
-    <div class="feature">
-        <i class="fas fa-file-alt feature-icon"></i>
-        <h3>File Converter</h3>
-        <p>Convert from mp4 to mp3 seamlessly with our third feature.</p>
-    </div>
-</div>
 
-<!-- Login and Register buttons at the bottom left -->
-<div class="footer">
-    <a href="{% url 'users:login' %}" class="btn btn-primary btn-lg">Login</a>
-    <a href="{% url 'users:register' %}" class="btn btn-primary btn-lg">Register</a>
+    <!-- Login and Register buttons under features -->
+    <div class="buttons">
+        <a href="{% url 'users:login' %}" class="btn">Login</a>
+        <a href="{% url 'users:register' %}" class="btn">Register</a>
+    </div>
 </div>
 
 {% endblock %}
