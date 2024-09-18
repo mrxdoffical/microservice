@@ -1,8 +1,15 @@
 {% extends 'users/base.html' %}
-
+{% load static %}
 {% block title %}Delete To-Do Item{% endblock %}
-
 {% block content %}
+<style>
+    body {
+        background-image: url("{% static 'images/todolist.jpg' %}") !important; /* Teal to dark blue gradient background */
+        background-repeat: no-repeat !important ;
+        background-position: center;
+        background-size: cover !important; /* Cover the entire background */
+    }
+</style>
 <div class="container mt-5">
     <h2 class="text-center mb-4">Delete To-Do Item</h2>
     <p>Are you sure you want to delete "{{ item.title }}"?</p>

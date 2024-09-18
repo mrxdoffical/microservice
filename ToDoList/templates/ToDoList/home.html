@@ -1,12 +1,14 @@
 {% extends 'users/base.html' %}
 
 {% block title %}To-Do List{% endblock %}
-
+{% load static %}
 {% block content %}
 <style>
     body {
-        background: linear-gradient(135deg, #008080, #00008B) !important; /* Teal to dark blue gradient background */
-        color: #ffffff !important;
+        background-image: url("{% static 'images/todolist.jpg' %}") !important; /* Teal to dark blue gradient background */
+        background-repeat: no-repeat !important ;
+        background-position: center;
+        background-size: cover !important; /* Cover the entire background */
     }
     .container {
         background-color: rgba(44, 44, 44, 0.8) !important; /* Transparent background */

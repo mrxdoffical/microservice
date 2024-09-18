@@ -9,58 +9,100 @@
 </head>
 <style>
     body {
-        background: url("{% static 'images/landing_page.jpeg' %}")!important;
+        background: url("{% static 'images/landing_page.jpg' %}") no-repeat center center fixed !important;
         background-size: cover !important;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        color: #ffffff;
     }
-    .container {
-        background-color: rgba(0, 0, 0, 0.5); /* More transparent */
+
+    .header {
+        text-align: left;
+        margin-top: 100px;
+        padding: 20px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: rgba(170, 166, 166, 0.5); /* Semi-transparent background for text visibility */
+        backdrop-filter: blur(5px); /* Glossy effect */
+        color: #af2727; /* Tinted red */
+        font-size: 2rem;
         border-radius: 10px;
-        padding: 30px;
+    }
+
+    .main-content-wrapper {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         position: relative;
-        z-index: 1;
+        height: calc(100vh - 100px); /* Adjust height to avoid overlap */
+        padding: 0 20px; /* Ensure padding to avoid content touching edges */
     }
-    .btn-primary {
-        background-color: #ff4500;
-        border-color: #ff4500;
-    }
-    .btn-primary:hover {
-        background-color: #cc3700;
-        border-color: #cc3700;
-    }
+
     .feature {
-        margin-top: 20px;
+        margin-bottom: 30px;
+        color: #ffffff;
+        text-align: left;
     }
+
+    .feature h3 {
+        font-size: 1.5rem;
+        margin-top: 5px;
+    }
+
+    .feature p {
+        margin-top: 5px;
+    }
+
     .feature-icon {
         font-size: 3rem;
         color: #ff4500;
     }
+
+    .footer {
+        display: flex;
+        justify-content: flex-start;
+        padding: 20px;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+    }
+
+    .footer .btn {
+        margin-right: 10px;
+    }
 </style>
-<div class="container mt-5">
-    <div class="card p-5 custom-card shadow" style="background-color: rgba(0, 0, 0, 0.5);">
-        <h1 class="text-center">Welcome to {{ site_name }}</h1>
-        <p class="text-center">Please login or register to continue.</p>
-        <div class="text-center mb-4">
-            <a href="{% url 'login' %}" class="btn btn-primary btn-lg mx-2">Login</a>
-            <a href="{% url 'register' %}" class="btn btn-primary btn-lg mx-2">Register</a>
-        </div>
-        <hr>
-        <div class="row text-center">
-            <div class="col-md-4 feature">
-                <i class="fas fa-check-circle feature-icon"></i>
-                <h3>YouTube Downloader</h3>
-                <p>Discover the amazing benefits of our first feature.</p>
-            </div>
-            <div class="col-md-4 feature">
-                <i class="fas fa-tasks feature-icon"></i>
-                <h3>To Do List</h3>
-                <p>Manage your tasks efficiently with our second feature.</p>
-            </div>
-            <div class="col-md-4 feature">
-                <i class="fas fa-file-alt feature-icon"></i>
-                <h3>File Converter</h3>
-                <p>Convert from mp4 to mp3 seamlessly with our third feature.</p>
-            </div>
-        </div>
+
+<!-- Title at the top left -->
+<div class="header">
+    <h1>Welcome to Your Second Home</h1>
+</div>
+
+<!-- Features at the left side -->
+<div class="main-content-wrapper">
+    <div class="feature">
+        <i class="fas fa-check-circle feature-icon"></i>
+        <h3>YouTube Downloader</h3>
+        <p>Discover the amazing benefits of our first feature.</p>
+    </div>
+    <div class="feature">
+        <i class="fas fa-tasks feature-icon"></i>
+        <h3>To Do List</h3>
+        <p>Manage your tasks efficiently with our second feature.</p>
+    </div>
+    <div class="feature">
+        <i class="fas fa-file-alt feature-icon"></i>
+        <h3>File Converter</h3>
+        <p>Convert from mp4 to mp3 seamlessly with our third feature.</p>
     </div>
 </div>
+
+<!-- Login and Register buttons at the bottom left -->
+<div class="footer">
+    <a href="{% url 'users:login' %}" class="btn btn-primary btn-lg">Login</a>
+    <a href="{% url 'users:register' %}" class="btn btn-primary btn-lg">Register</a>
+</div>
+
 {% endblock %}

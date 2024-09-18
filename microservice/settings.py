@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'file_converter',
-    'channels'
 ]
 
 ASGI_APPLICATION = 'microservice.asgi.application'

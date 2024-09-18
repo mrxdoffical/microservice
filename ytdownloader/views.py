@@ -35,18 +35,17 @@ def format_size(size_bytes):
 @login_required
 def home(request):
     if request.method == 'POST':
-        url = request.POST.get('url')
-        format_id = request.POST.get('format_id')
-        logger.debug(f"Received URL: {url}")
+        if 'fetch_formats' in request.POST:
+            url = request.POST.get('url')
+            logger.debug(f"Received URL: {url}")
 
-        youtube_regex = re.compile(
-            r'^(https?://)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)/.+$'
-        )
-        if not youtube_regex.match(url):
-            logger.error("Invalid YouTube URL")
-            return render(request, 'ytdownloader/home.html', {'error': 'Invalid YouTube URL'})
+            youtube_regex = re.compile(
+                r'^(https?://)?(www\.)?(youtube|youtu|youtube-nocookie)\.(com|be)/.+$'
+            )
+            if not youtube_regex.match(url):
+                logger.error("Invalid YouTube URL")
+                return render(request, 'ytdownloader/home.html', {'error': 'Invalid YouTube URL'})
 
-        if url and not format_id:
             try:
                 info_dict = extract_video_info(url)
                 formats = info_dict.get('formats', [])
@@ -94,7 +93,11 @@ def home(request):
                 logger.error(f"Error fetching video formats: {e}")
                 return render(request, 'ytdownloader/home.html', {'error': f"Error fetching video formats: {e}"})
 
-        if url and format_id:
+        elif 'download_video' in request.POST:
+            url = request.POST.get('url')
+            format_id = request.POST.get('format_id')
+            logger.debug(f"Received URL: {url}")
+
             try:
                 info_dict = extract_video_info(url)
                 title = info_dict.get('title')

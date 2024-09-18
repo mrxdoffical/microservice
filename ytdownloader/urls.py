@@ -1,9 +1,9 @@
 from django.urls import path
 from . import views
 
+app_name = 'ytdownloader'
+
 urlpatterns = [
-    path('home/', views.home, name='home'),
-    path('fetch-formats/', views.home, name='fetch_formats'),
-    path('download-video/', views.home, name='download_video'),
+    path('', views.home, name='home'),
     path('search/', views.search_youtube, name='search_youtube'),
 ]
