@@ -63,7 +63,16 @@
         top: 50%;
         transform: translateY(-50%);
         font-size: 1.2rem;
-        color: #000; /* Black color */
+        color: #000;
+        transition: font-weight 0.3s ease; /* Smooth transition for bold effect */
+    }
+    /* When the input is focused, make the adjacent icon bold */
+    .form-control:focus + .form-icon {
+        font-weight: bold;
+    }
+    /* When the input is not focused, keep the icon normal */
+    .form-control:not(:focus) + .form-icon {
+        font-weight: normal;
     }
     /* New styles for inline layout */
     .text-center-inline {
@@ -105,11 +114,13 @@
                             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                             <div class="input-group">
                                 {{ field|add_class:"form-control" }}
-                                {% if field.name == 'username' %}
-                                    <i class="bx bx-user form-icon"></i>
-                                {% elif field.name == 'password' %}
-                                    <i class="bx bx-lock form-icon"></i>
-                                {% endif %}
+                                <i class="bx 
+                                    {% if field.name == 'username' %}
+                                        bx-user
+                                    {% elif field.name == 'password' %}
+                                        bx-lock
+                                    {% endif %}
+                                form-icon"></i>
                             </div>
                             {% if field.errors %}
                                 <div class="alert alert-danger mt-2">
