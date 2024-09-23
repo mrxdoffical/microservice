@@ -92,15 +92,6 @@
 <div class="container mt-5">
     <h2 class="text-center mb-4 text-white">YouTube Downloader</h2>
     
-    <!-- Search Form -->
-    <form method="get" action="{% url 'ytdownloader:search_youtube' %}" class="mb-4">
-        <div class="form-group">
-            <label for="query" class="text-white">Search YouTube</label>
-            <input type="text" class="form-control bg-dark" id="query" name="query" placeholder="Search YouTube" required>
-        </div>
-        <button type="submit" class="btn btn-fetch mt-3">Search</button>
-    </form>
-
     <!-- Fetch Formats Form -->
     <form method="post" action="{% url 'ytdownloader:home' %}" id="fetch-form">
         {% csrf_token %}
@@ -143,6 +134,7 @@
     </form>
     {% endif %}
     
+    <!-- Downloads Section -->
     {% if downloads %}
     <h3 class="text-white mt-5">Your Downloads</h3>
     <div class="dropdown">
@@ -167,17 +159,11 @@
     {% if error %}
     <div class="alert alert-danger mt-3">{{ error }}</div>
     {% endif %}
-
-    <!-- Loading Animation -->
-    <div id="loading-animation" class="text-center mt-5" style="display: none;">
-        <div class="spinner-border text-danger" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-        <p class="text-white mt-3">Downloading...</p>
-    </div>
 </div>
 
 <iframe name="download-iframe" style="display:none;"></iframe>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
     document.getElementById('download-form').addEventListener('submit', function() {
@@ -186,3 +172,4 @@
 </script>
 
 {% endblock %}
+

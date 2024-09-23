@@ -5,5 +5,4 @@ app_name = 'ytdownloader'
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('search/', views.search_youtube, name='search_youtube'),
 ]

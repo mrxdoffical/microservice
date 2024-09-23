@@ -55,7 +55,7 @@ def combine_video_audio(video_path, audio_path, output_path):
 
 def download_audio_format(url, best_audio_format, title, timestamp):
     """Download the best audio format available as MP3."""
-    audio_filename = f"{sanitize_filename(title)}_audio_{timestamp}.mp3"
+    audio_filename = f"{sanitize_filename(title)}_audio_{timestamp}"
     audio_path = os.path.join(os.path.expanduser('~'), 'Downloads', audio_filename)
 
     ydl_opts_audio = {
@@ -73,7 +73,7 @@ def download_audio_format(url, best_audio_format, title, timestamp):
     with yt_dlp.YoutubeDL(ydl_opts_audio) as ydl:
         ydl.download([url])
 
-    return audio_path
+    return audio_path+".mp3"
 
 @login_required
 def home(request):
@@ -150,9 +150,10 @@ def home(request):
                 title = info_dict.get('title')
                 timestamp = int(time.time())
 
+                video_format = next((f for f in info_dict['formats'] if f['format_id'] == format_id), None)
+
                 if download_type == 'audio':
                     audio_formats = request.session.get('audio_formats', [])
-
                     if audio_formats:
                         best_audio_format = max(audio_formats, key=lambda af: af['tbr'])
                         audio_path = download_audio_format(url, best_audio_format, title, timestamp)
@@ -164,22 +165,37 @@ def home(request):
                         return render(request, 'ytdownloader/home.html', {'error': 'No audio format found.'})
 
                 else:
-                    video_filename = f"{sanitize_filename(title)}_video_{timestamp}.mp4"
-                    video_path = os.path.join(os.path.expanduser('~'), 'Downloads', video_filename)
+                    # Only download once if video has both audio and video
+                    if video_format and video_format.get('acodec', 'none') != 'none':
+                        video_filename = f"{sanitize_filename(title)}_video_{timestamp}.mp4"
+                        video_path = os.path.join(os.path.expanduser('~'), 'Downloads', video_filename)
 
-                    ydl_opts_video = {
-                        'format': format_id,
-                        'outtmpl': video_path,
-                        'noplaylist': True,
-                    }
-                    with yt_dlp.YoutubeDL(ydl_opts_video) as ydl:
-                        ydl.download([url])
+                        ydl_opts_video = {
+                            'format': format_id,
+                            'outtmpl': video_path,
+                            'noplaylist': True,
+                        }
+                        with yt_dlp.YoutubeDL(ydl_opts_video) as ydl:
+                            ydl.download([url])
 
-                    video_format = next((f for f in info_dict['formats'] if f['format_id'] == format_id), None)
+                        response = HttpResponse(open(video_path, 'rb'), content_type='video/mp4')
+                        response['Content-Disposition'] = f'attachment; filename={urllib.parse.quote(video_filename)}'
+                        return response
 
-                    if video_format and video_format.get('acodec', 'none') == 'none':
+                    # If video lacks an audio track, download and combine audio
+                    else:
+                        video_filename = f"{sanitize_filename(title)}_video_{timestamp}.mp4"
+                        video_path = os.path.join(os.path.expanduser('~'), 'Downloads', video_filename)
+
+                        ydl_opts_video = {
+                            'format': format_id,
+                            'outtmpl': video_path,
+                            'noplaylist': True,
+                        }
+                        with yt_dlp.YoutubeDL(ydl_opts_video) as ydl:
+                            ydl.download([url])
+
                         audio_formats = request.session.get('audio_formats', [])
-
                         if audio_formats:
                             best_audio_format = max(audio_formats, key=lambda af: af['tbr'])
                             audio_path = download_audio_format(url, best_audio_format, title, timestamp)
@@ -195,15 +211,7 @@ def home(request):
                             else:
                                 return render(request, 'ytdownloader/home.html', {'error': 'Error combining video and audio.'})
 
-                    else:
-                        response = HttpResponse(open(video_path, 'rb'), content_type='video/mp4')
-                        response['Content-Disposition'] = f'attachment; filename={urllib.parse.quote(video_filename)}'
-                        return response
-
             except Exception as e:
                 return render(request, 'ytdownloader/home.html', {'error': f"Error downloading video: {e}"})
 
     return render(request, 'ytdownloader/home.html')
-
-def search_youtube():
-    pass
