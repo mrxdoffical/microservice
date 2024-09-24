@@ -43,6 +43,7 @@ MarkupSafe==2.1.5
 moviepy==1.0.3
 multidict==6.1.0
 mutagen==1.47.0
+mysqlclient==2.2.4
 notdiamond==0.3.13
 numpy==2.1.1
 openai==1.45.0
