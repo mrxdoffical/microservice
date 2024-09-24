@@ -6,6 +6,7 @@
 {% block content %}
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <style>
     body {
@@ -102,6 +103,18 @@
             flex-direction: column; /* Stack features vertically on small screens */
         }
     }
+        .alerts {
+        position: absolute;
+        top: -60px; /* Adjust this value to change vertical positioning */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%; /* Adjust width if necessary */
+        z-index: 1050; /* Ensure it appears above other content */
+        pointer-events: none; /* Make sure it doesn't affect the layout */
+    }
+    .alerts .alert {
+        pointer-events: auto; /* Make alert buttons clickable */
+    }
 </style>
 
 <!-- Title at the top center -->
@@ -109,11 +122,27 @@
     Welcome to Your Second Home
 </div>
 
+<!-- Bootstrap alerts for messages -->
+<div class="container mt-4 position-fixed">
+    {% if messages %}
+        <div class="alerts">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
 <!-- Features displayed next to each other -->
 <div class="main-content-wrapper">
     <div class="features-container">
         <div class="feature">
-            <i class="fas fa-check-circle feature-icon"></i> 
+            <i class="fas fa-check-circle feature-icon"></i>
             <div>
                 <h3>YouTube Downloader</h3>
                 <p>Discover the amazing benefits of our first feature.</p>
@@ -141,5 +170,16 @@
         <a href="{% url 'users:register' %}" class="btn">Register</a>
     </div>
 </div>
+
+<!-- Include jQuery and Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script>
+    $(document).ready(function(){
+        setTimeout(function(){
+            $('.alert').alert('close');
+        }, 5000);
+    });
+</script>
 
 {% endblock %}

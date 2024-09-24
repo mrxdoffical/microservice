@@ -1,0 +1,97 @@
+{% extends 'users/base.html' %}
+{% load static %}
+
+{% block title %}Download History{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        background: url("{% static 'images/youtube.jpg' %}") no-repeat center center fixed !important;
+        background-size:cover !important;
+        color: #ffffff !important;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+
+    .container {
+        padding-top: 20px;
+    }
+
+    .card {
+        background-color: rgba(0, 0, 0, 0.75) !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 15px !important;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6) !important;
+        margin-bottom: 20px;
+    }
+
+    .card-img-top {
+        border-radius: 15px 15px 0 0 !important;
+    }
+
+    .card-title, .card-text {
+        color: #ffffff !important;
+    }
+
+    .btn-primary {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border: none !important;
+        color: #ffffff !important;
+    }
+
+    .btn-primary:hover {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+    }
+
+    .alert-warning {
+        background-color: rgba(255, 193, 7, 0.75);
+        color: #000;
+        border-radius: 10px;
+    }
+
+    .alert-dismissible .close {
+        color: #000;
+    }
+
+</style>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Download History</h2>
+    <div class="row">
+
+        {% for download in downloads %}
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <img src="{{ download.thumbnail }}" class="card-img-top" alt="{{ download.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ download.title }}</h5>
+                        <p class="card-text">Quality: {{ download.format_id }}</p>
+                        <p class="card-text"><small>Downloaded on: {{ download.downloaded_at|date:"F d, Y H:i" }}</small></p>
+                        <a href="{{ download.url }}" class="btn btn-primary">Download Again?</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-warning" role="alert">
+                    No downloads found.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Include Popper and Bootstrap JS for better functioning of components -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

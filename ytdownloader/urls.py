@@ -5,4 +5,5 @@ app_name = 'ytdownloader'
 
 urlpatterns = [
     path('', views.home, name='home'),
+    path('download-history/', views.download_history, name='download_history'),
 ]
