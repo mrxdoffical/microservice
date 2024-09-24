@@ -14,7 +14,6 @@ click==8.1.7
 decorator==4.4.2
 distro==1.9.0
 Django==5.1.1
-docx2pdf==0.1.8
 ffmpeg==1.4
 ffmpeg-python==0.2.0
 filelock==3.16.0
@@ -43,14 +42,8 @@ MarkupSafe==2.1.5
 moviepy==1.0.3
 multidict==6.1.0
 mutagen==1.47.0
-mysqlclient==2.2.4
-notdiamond==0.3.13
-numpy==2.1.1
-openai==1.45.0
 opencv-python-headless==4.10.0.84
 packaging==24.1
-pandas==2.2.2
-pdf2docx==0.5.8
 pillow==10.4.0
 proglog==0.1.10
 pycryptodomex==3.20.0
